@@ -1,0 +1,2 @@
+# afit-wayfinder
+Mapfit replacement
