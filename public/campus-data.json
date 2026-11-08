@@ -1,0 +1,673 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pelocy_kitchen",
+        "name": "Pelocy Kitchen Area",
+        "category": "food",
+        "image": "images/placeholder.jpg",
+        "description": "Popular central food and hub spot. Great place for freshmen to grab a quick meal between lecture periods.",
+        "search_keywords": [
+          "food",
+          "lunch",
+          "cafeteria",
+          "canteen",
+          "snacks"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440082,
+          10.610018
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_library",
+        "name": "AFIT Library Area",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Main campus library. The ultimate quiet study zone for exam preparations and research documentation.",
+        "search_keywords": [
+          "library",
+          "books",
+          "study",
+          "quiet zone",
+          "research"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.442485,
+          10.610123
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ibrahim_alfa_auditorium",
+        "name": "Ibrahim Alfa Auditorium",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Major campus event and orientation hub. Incoming freshmen will spend a lot of time here during matriculation ceremonies.",
+        "search_keywords": [
+          "auditorium",
+          "hall",
+          "orientation",
+          "matriculation",
+          "events",
+          "alfa hall"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.445049,
+          10.609248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "amao_hall",
+        "name": "AMAO Hall",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Prominent lecture hall central landmark situated right next to the main kitchen strip corridors.",
+        "search_keywords": [
+          "lecture room",
+          "hall",
+          "amao",
+          "classes"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440661,
+          10.610144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bush_canteen",
+        "name": "Bush canteen",
+        "category": "food",
+        "image": "images/placeholder.jpg",
+        "description": "Alternative outdoor food vendor location right near the mechanical engineering faculty spine.",
+        "search_keywords": [
+          "food",
+          "canteen",
+          "bush",
+          "hangout",
+          "lunch"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440414,
+          10.609233
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mechanical_engineering",
+        "name": "Mechanical & Aerospace Ground Engineering Dept",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Core engineering wing holding active specialized training equipment, computer engines, and research spaces.",
+        "search_keywords": [
+          "mechanical",
+          "aerospace",
+          "engineering",
+          "labs",
+          "metallurgical and material engineering",
+          "science laboratories",
+          "lr 112"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.441648,
+          10.608969
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "masjid_mosque",
+        "name": "Masjid (Mosque)",
+        "category": "community",
+        "image": "images/placeholder.jpg",
+        "description": "Central Islamic worship and community hub located neatly right behind the Pelocy Kitchen area.",
+        "search_keywords": [
+          "mosque",
+          "masjid",
+          "prayer",
+          "worship",
+          "islamic"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.441637,
+          10.609617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "love_garden",
+        "name": "Love Garden",
+        "category": "community",
+        "image": "images/placeholder.jpg",
+        "description": "Central visual green zone landmark utilized extensively by students for outdoor relaxation, reading, and waiting between lecture slots.",
+        "search_keywords": [
+          "garden",
+          "love",
+          "park",
+          "relaxation",
+          "sitout"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443082,
+          10.610005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "christian_fellowship",
+        "name": "AFIT Christian Fellowship",
+        "category": "community",
+        "image": "images/placeholder.jpg",
+        "description": "Landmark Christian worship and youth student gathering space situated along the eastern flank of this sector.",
+        "search_keywords": [
+          "church",
+          "fellowship",
+          "christian",
+          "prayer",
+          "worship",
+          "acf"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.442389,
+          10.608686
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "basic_remedial_studies",
+        "name": "School of Basic and Remedial Studies",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Crucial initial processing department for fundamental academic courses and foundational student lectures.",
+        "search_keywords": [
+          "basic studies",
+          "remedial",
+          "pre-degree",
+          "remedial building"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.442872,
+          10.609458
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "civil_environmental_engineering",
+        "name": "Civil and Environmental Engineering (CEED)",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Faculty wings dedicated to civil structures, drafting labs, and environmental systems layout research.",
+        "search_keywords": [
+          "civil",
+          "environmental",
+          "engineering",
+          "ceed",
+          "drawing lab"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443568,
+          10.610016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "science_computing_block_a",
+        "name": "Faculty of Science and Computing (Block A)",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Large instructional block template. Ground check recommended to identify exact sub-department split boundaries.",
+        "search_keywords": [
+          "science",
+          "computing",
+          "block a",
+          "computer science",
+          "pure science"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.444832,
+          10.609317
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fsms_block",
+        "name": "Faculty of Social & Management Science (FSMS)",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Eye-witness verified asset. Sits physically sandwiched right in the middle between Computing and Pure Science wings.",
+        "search_keywords": [
+          "fsms",
+          "social science",
+          "management",
+          "business",
+          "accounting"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.445454,
+          10.609777
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bukka_pot",
+        "name": "BUKKA POT (Amala Feli Feli)",
+        "category": "food",
+        "image": "images/placeholder.jpg",
+        "description": "Famous northeast student culinary option endpoint. Highly populated dining landmark when classes disperse.",
+        "search_keywords": [
+          "amala",
+          "bukka pot",
+          "feli feli",
+          "food",
+          "restaurant"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.444666,
+          10.610431
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "armament_engineering",
+        "name": "AFIT Armament Engineering Department",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Specialized defense engineering wing anchored on the northern operational tier road network.",
+        "search_keywords": [
+          "armament",
+          "weapons tech",
+          "defense engineering",
+          "military gear"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443652,
+          10.61129
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afrdc_research",
+        "name": "Air Force Research And Development Centre",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Advanced prototyping and scientific administration system installation along the central-east avenue.",
+        "search_keywords": [
+          "afrdc",
+          "research",
+          "development",
+          "innovation center"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443571,
+          10.610705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "electrical_engineering",
+        "name": "AFIT Electrical Electronics Department",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Primary circuit labs, power grid simulation setups, and lecture arrays located directly north of AMAO Hall.",
+        "search_keywords": [
+          "electrical",
+          "electronics",
+          "ee",
+          "power lab",
+          "hardware"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440728,
+          10.610705
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_ict_center",
+        "name": "AFIT ICT Center",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Primary technological facility managing student user logins, software labs, and core connectivity backbones.",
+        "search_keywords": [
+          "ict",
+          "it center",
+          "internet",
+          "systems lab",
+          "560 cbt centres",
+          "clinic"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440379,
+          10.6112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "aed_lecture_room",
+        "name": "AED Lecture Room",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Large multi-seat academic space anchoring the northwest corner curve loop of the core instruction zone.",
+        "search_keywords": [
+          "aed room",
+          "seminar hall",
+          "aed lecture",
+          "exam hall"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440428,
+          10.611696
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_girls_hostel",
+        "name": "AFIT Girls Hostel",
+        "category": "housing",
+        "image": "images/placeholder.jpg",
+        "description": "On-campus female student accommodation blocks, positioned on the northeast tier of the residential road system.",
+        "search_keywords": [
+          "girls hostel",
+          "female housing",
+          "dorms",
+          "rooms"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.447001,
+          10.61367
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "nafil_girls_hostel",
+        "name": "NAFIL Girls Hostel",
+        "category": "housing",
+        "image": "images/placeholder.jpg",
+        "description": "Distinct alternative residential facility for female students, right alongside the primary hostel loop.",
+        "search_keywords": [
+          "nafil",
+          "female hostel",
+          "accommodation",
+          "girls dorm"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.448746,
+          10.613215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jumuat_mosque",
+        "name": "AFIT Jumu'at Mosque",
+        "category": "community",
+        "image": "images/placeholder.jpg",
+        "description": "Large congregation mosque serving the eastern campus residential and athletic layout sectors.",
+        "search_keywords": [
+          "jumuat",
+          "friday mosque",
+          "prayer hall",
+          "large masjid"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.449687,
+          10.612596
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "aeroraph_uas",
+        "name": "AeroRaph UAS",
+        "category": "academic",
+        "image": "images/placeholder.jpg",
+        "description": "Advanced drone services installation, flight systems maintenance labs, and technical design center units.",
+        "search_keywords": [
+          "aeroraph",
+          "uas",
+          "drones",
+          "uav",
+          "aviation lab"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.44996,
+          10.611672
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "basketball_court",
+        "name": "Basketball court",
+        "category": "recreation",
+        "image": "images/placeholder.jpg",
+        "description": "Open student sports installation serving as a prime athletic activity center on the eastern campus border.",
+        "search_keywords": [
+          "basketball",
+          "court",
+          "sports",
+          "games",
+          "court yard"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.449057,
+          10.611463
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_boys_hostel",
+        "name": "AFIT Boys Hostel",
+        "category": "housing",
+        "image": "images/placeholder.jpg",
+        "description": "Major male accommodation complex situated on the far north residential road sector blocks.",
+        "search_keywords": [
+          "boys hostel",
+          "male accommodation",
+          "dorms",
+          "rooms"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443807,
+          10.618075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_civilian_hostel",
+        "name": "Afit Civilian Hostel",
+        "category": "housing",
+        "image": "images/placeholder.jpg",
+        "description": "Dedicated residential block for civilian university stream entries, resting immediately adjacent to the boys hostel footprint.",
+        "search_keywords": [
+          "civilian hostel",
+          "non-military housing",
+          "dorms",
+          "civilian block"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.443815,
+          10.617995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "afit_headquarters",
+        "name": "AFIT Headquarters",
+        "category": "administration",
+        "image": "images/placeholder.jpg",
+        "description": "The administrative command center of the entire institute. Contains core offices managing university affairs.",
+        "search_keywords": [
+          "hq",
+          "headquarters",
+          "commandant office",
+          "provost",
+          "registry",
+          "admin block",
+          "rectory"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.440347,
+          10.608276
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "princess_gimbiya_hostel",
+        "name": "Princess Gimbiya Hostel",
+        "category": "housing",
+        "image": "images/placeholder.jpg",
+        "description": "Off-campus residential apartment block template helping handle the northern student boarding spillover.",
+        "search_keywords": [
+          "gimbiya",
+          "princess hostel",
+          "off-campus housing",
+          "apartments"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.456857,
+          10.614536
+        ]
+      }
+    }
+  ]
+}
