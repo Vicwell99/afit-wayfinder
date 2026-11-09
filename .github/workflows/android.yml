@@ -31,7 +31,11 @@ jobs:
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          set -o pipefail
+          ./gradlew assembleDebug --no-daemon 2>&1 | tee gradle.log || {
+            echo "::error title=Gradle failed::$(grep -E -A6 'What went wrong|FAILURE' gradle.log | head -c 3000 | tr '\n' '|')"
+            exit 1
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: afit-wayfinder-apk
