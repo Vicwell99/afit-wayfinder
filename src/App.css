@@ -17,3 +17,17 @@ button.sec{background:var(--card);color:var(--fg);border:1px solid var(--bd)}
 .form{display:flex;flex-direction:column;gap:6px;padding:8px;background:var(--card);padding-bottom:calc(8px + env(safe-area-inset-bottom))}
 .row{display:flex;gap:6px}.row>*{flex:1;min-width:0}
 .pin{font-size:24px;line-height:28px;text-align:center}
+.bar.sub{padding-top:0;justify-content:space-between}
+.acts{display:flex;gap:4px;align-items:center}
+.muted{opacity:.7;margin:0}
+.err{color:#d93025;font-size:14px}
+.auth{min-height:100%;display:grid;place-items:center;padding:16px}
+.card{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px;background:var(--card);padding:20px;border-radius:14px}
+.card h1{margin:0;font-size:22px}
+button.link{background:none;color:var(--acc);border:0}
+.page{height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.users{flex:1;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
+.ucard{display:flex;justify-content:space-between;gap:8px;align-items:center;background:var(--card);padding:10px;border-radius:10px;flex-wrap:wrap}
+.ucard small{display:block;opacity:.7}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--bg);border:1px solid var(--bd)}
+.badge.admin{background:var(--acc);color:#fff;border-color:var(--acc)}
