@@ -6,7 +6,8 @@ import MapView from './MapView'
 import './App.css'
 
 const CACHE = 'afit_places_cache'
-const readCache = () => { try { return JSON.parse(store.get(CACHE) || 'null') } catch { return null } }
+const PCACHE = 'afit_paths_cache'
+const readCache = (k = CACHE) => { try { return JSON.parse(store.get(k) || 'null') } catch { return null } }
 
 export default function App() {
   const [user, setUser] = useState(null)
@@ -14,6 +15,7 @@ export default function App() {
   const [guest, setGuest] = useState(store.get('afit_guest') === '1')
   const [view, setView] = useState('map')
   const [places, setPlaces] = useState(() => readCache() || [])
+  const [paths, setPaths] = useState(() => readCache(PCACHE) || [])
   const [status, setStatus] = useState('ok')
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export default function App() {
     try {
       const d = await api('/places')
       setPlaces(d.places); store.set(CACHE, JSON.stringify(d.places)); setStatus('ok')
+      try { const pd = await api('/paths'); setPaths(pd.paths); store.set(PCACHE, JSON.stringify(pd.paths)) } catch { /* keep cached paths */ }
     } catch {
       setStatus('offline')
       if (!readCache()) {
@@ -54,5 +57,5 @@ export default function App() {
   if (!ready) return <div className="auth"><p>Loading…</p></div>
   if (!user && !guest) return <AuthPage onAuth={(u) => { setUser(u); setView('map') }} onGuest={goGuest} />
   if (view === 'users' && user?.role === 'admin') return <AdminUsers me={user} onBack={() => setView('map')} />
-  return <MapView user={user} places={places} status={status} onChanged={loadPlaces} onLogout={logout} onUsers={() => setView('users')} onLogin={() => { store.del('afit_guest'); setGuest(false) }} />
+  return <MapView user={user} places={places} paths={paths} status={status} onChanged={loadPlaces} onLogout={logout} onUsers={() => setView('users')} onLogin={() => { store.del('afit_guest'); setGuest(false) }} />
 }

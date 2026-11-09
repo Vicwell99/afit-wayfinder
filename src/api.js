@@ -23,3 +23,4 @@ export async function api(path, { method = 'GET', body } = {}) {
   if (!res.ok) { const e = new Error(data.error || 'Request failed'); e.status = res.status; throw e }
   return data
 }
+export const imgUrl = (id) => BASE + '/api/images/' + id

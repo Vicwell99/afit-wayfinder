@@ -7,7 +7,7 @@ so places added by the admin appear everywhere.
 ## Roles
 - **Guest**: view the map.
 - **Student**: sign up on the login page; view the map.
-- **Admin**: add/edit/delete places (tap map or exact GPS) and see/manage all users. The admin
+- **Admin**: add/edit/delete places, trace building outlines (shown in 3D), upload building photos, draw walking paths (used for directions) and manage users. The admin
   account is created from the `ADMIN_EMAIL` / `ADMIN_PASSWORD` environment variables.
 
 ## Run locally
