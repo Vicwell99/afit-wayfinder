@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api, setToken } from './api'
 
 export default function AuthPage({ onAuth, onGuest }) {
@@ -6,6 +6,12 @@ export default function AuthPage({ onAuth, onGuest }) {
   const [f, setF] = useState({ name: '', email: '', password: '' })
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
+  const [slow, setSlow] = useState(false)
+  useEffect(() => {
+    if (!busy) return
+    const t = setTimeout(() => setSlow(true), 6000)
+    return () => { clearTimeout(t); setSlow(false) }
+  }, [busy])
 
   const submit = async (e) => {
     e.preventDefault(); setErr(''); setBusy(true)
@@ -24,7 +30,7 @@ export default function AuthPage({ onAuth, onGuest }) {
         <input type="email" placeholder="Email" autoComplete="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
         <input type="password" placeholder="Password (min 8 characters)" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={f.password} onChange={(e) => setF({ ...f, password: e.target.value })} />
         {err && <div className="err">{err}</div>}
-        <button disabled={busy}>{busy ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Sign up'}</button>
+        <button disabled={busy}>{busy ? (slow ? 'Waking the server up… up to a minute' : 'Please wait…') : mode === 'login' ? 'Log in' : 'Sign up'}</button>
         <button type="button" className="sec" onClick={() => { setErr(''); setMode(mode === 'login' ? 'register' : 'login') }}>
           {mode === 'login' ? 'New student? Create account' : 'Have an account? Log in'}
         </button>

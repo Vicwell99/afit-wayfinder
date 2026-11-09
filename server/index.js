@@ -16,8 +16,10 @@ if (!SECRET) throw new Error('JWT_SECRET is required in production')
 // ---------- database ----------
 let pool
 if (process.env.DATABASE_URL) {
-  const url = process.env.DATABASE_URL
-  pool = new pg.Pool({ connectionString: url, ssl: /localhost|127\.0\.0\.1/.test(url) ? false : { rejectUnauthorized: false } })
+  // drop ?sslmode=... from the URL: the pg library would otherwise force strict certificate checks and
+  // ignore the ssl option below (Aiven uses its own certificate authority)
+  const url = process.env.DATABASE_URL.trim().replace(/([?&])sslmode=[^&]*&?/, '$1').replace(/[?&]$/, '')
+  pool = new pg.Pool({ connectionString: url, ssl: /localhost|127\.0\.0\.1/.test(url) ? false : { rejectUnauthorized: false }, connectionTimeoutMillis: 15000 })
 } else {
   if (prod) throw new Error('DATABASE_URL is required in production')
   const { newDb } = await import('pg-mem')
@@ -25,6 +27,11 @@ if (process.env.DATABASE_URL) {
   console.warn('No DATABASE_URL: using a temporary in-memory database (data is lost on restart).')
 }
 const q = (text, params) => pool.query(text, params)
+try { await q('SELECT 1') } catch (e) {
+  console.error('DATABASE CONNECTION FAILED:', e.message)
+  throw e
+}
+console.log('Database connected')
 
 await q(`CREATE TABLE IF NOT EXISTS users (
   id text PRIMARY KEY, name text NOT NULL, email text NOT NULL UNIQUE, pass text NOT NULL,
