@@ -34,6 +34,7 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
   const [busy, setBusy] = useState(false)
   const [nav, setNav] = useState(null)
   const [gallery, setGallery] = useState(null) // { place, i }
+  const centered = useRef(false)
 
   const graph = useMemo(() => buildGraph(paths || []), [paths])
 
@@ -103,6 +104,15 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
       meMarker.current = new maplibregl.Marker({ element: el }).setLngLat([me[1], me[0]]).addTo(mapRef.current)
     } else meMarker.current.setLngLat([me[1], me[0]])
   }, [me, ready])
+
+  // start the map where the user is: fly to the first GPS fix once
+  useEffect(() => {
+    if (!ready || !me || centered.current) return
+    centered.current = true
+    mapRef.current.flyTo({ center: [me[1], me[0]], zoom: 17.5, pitch: 55, duration: 1500 })
+  }, [me, ready])
+  const toMe = () => locate((ll) => mapRef.current?.flyTo({ center: [ll[1], ll[0]], zoom: 18, pitch: is3d ? 60 : 0, duration: 1200 }))
+  const toCampus = () => mapRef.current?.flyTo({ center: CENTER, zoom: 16.5, pitch: is3d ? 55 : 0, bearing: -15, duration: 1200 })
 
   const list = useMemo(() => {
     const s = q.toLowerCase()
@@ -281,6 +291,8 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
         <div ref={box} className="map3d" />
         {mapErr && <div className="maperr">{mapErr}</div>}
         <button className="sec btn3d" onClick={toggle3d}>{is3d ? '3D' : '2D'}</button>
+        <button className="sec btn3d" style={{ top: 52 }} onClick={toMe} aria-label="My location">📍</button>
+        <button className="sec btn3d" style={{ top: 94 }} onClick={toCampus} aria-label="Campus">🏫</button>
         {nav && (
           <div className="navcard">
             <b>🧭 {nav.place.name}</b>
