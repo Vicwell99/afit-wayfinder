@@ -1,14 +1,30 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { api, imgUrl } from './api'
+import { api, imgUrl, store } from './api'
 import { bearing, buildGraph, dist, distLL, fmt, mins, pathRoute } from './geo'
 import { resizeImage } from './imageUtil'
 
 const CATS = { academic: '🎓', housing: '🛏️', food: '🍽️', community: '🤝', recreation: '⚽', administration: '🏢', market: '🛒', health: '🏥', other: '📌' }
-const COLORS = { academic: '#4f7cff', housing: '#f59e0b', food: '#ef4444', community: '#a855f7', recreation: '#22c55e', administration: '#64748b', market: '#ec4899', health: '#14b8a6', other: '#94a3b8' }
+const COLORS = { academic: '#00e5ff', housing: '#ffb300', food: '#ff3d9a', community: '#7c4dff', recreation: '#00e676', administration: '#8aa4ff', market: '#ff7a45', health: '#2dd4bf', other: '#94a3b8' }
 const CENTER = [7.448, 10.6135] // [lng, lat]
-const STYLE = 'https://tiles.openfreemap.org/styles/liberty' // free vector tiles with 3D buildings
+// Base maps are plain raster tiles (no API keys). Satellite is the default: it shows the real campus,
+// which makes tracing buildings and paths easy even where OpenStreetMap has little data.
+const BASES = { sat: { label: 'Satellite', icon: '🛰️' }, osm: { label: 'Street', icon: '🗺️' }, dark: { label: 'Dark', icon: '🌙' } }
+const STYLE = {
+  version: 8,
+  sources: {
+    sat: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], attribution: 'Imagery © Esri, Maxar, Earthstar Geographics' },
+    osm: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'], attribution: '© OpenStreetMap contributors' },
+    dark: { type: 'raster', tileSize: 256, maxzoom: 20, tiles: ['a', 'b', 'c', 'd'].map((x) => `https://${x}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png`), attribution: '© OpenStreetMap contributors © CARTO' },
+  },
+  layers: [
+    { id: 'bg', type: 'background', paint: { 'background-color': '#050a18' } },
+    { id: 'base-sat', type: 'raster', source: 'sat' },
+    { id: 'base-osm', type: 'raster', source: 'osm', layout: { visibility: 'none' } },
+    { id: 'base-dark', type: 'raster', source: 'dark', layout: { visibility: 'none' } },
+  ],
+}
 const ROUTER = 'https://routing.openstreetmap.de/routed-foot/route/v1/foot/'
 const EMPTY = { id: null, name: '', category: 'academic', description: '', height: 10, footprint: [], images: [], newImgs: [], removed: [] }
 const EMPTYFC = { type: 'FeatureCollection', features: [] }
@@ -35,6 +51,9 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
   const [nav, setNav] = useState(null)
   const [gallery, setGallery] = useState(null) // { place, i }
   const centered = useRef(false)
+  const [base, setBase] = useState(() => (BASES[store.get('afit_base')] ? store.get('afit_base') : 'sat'))
+  const [toast, setToast] = useState('')
+  const baseRef = useRef(base), errs = useRef({})
 
   const graph = useMemo(() => buildGraph(paths || []), [paths])
 
@@ -42,18 +61,27 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
   useEffect(() => {
     let map
     try {
-      map = new maplibregl.Map({ container: box.current, style: STYLE, center: CENTER, zoom: 16.5, pitch: 55, bearing: -15, maxPitch: 75 })
+      map = new maplibregl.Map({ container: box.current, style: STYLE, center: CENTER, zoom: 16.5, pitch: 55, bearing: -15, maxPitch: 75, maxZoom: 21 })
     } catch { setTimeout(() => setMapErr('3D maps need WebGL, which this device or browser does not support.'), 0); return }
     map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right')
+    map.on('error', (e) => { // if the active base map keeps failing, switch to another one automatically
+      const id = e?.sourceId
+      if (!BASES[id]) return
+      errs.current[id] = (errs.current[id] || 0) + 1
+      if (errs.current[id] === 6 && baseRef.current === id) {
+        const next = Object.keys(BASES).find((k) => k !== id && !(errs.current[k] >= 6))
+        if (next) { setBase(next); setToast(`${BASES[id].label} map didn't load. Switched to ${BASES[next].label}.`) }
+      }
+    })
     map.on('load', () => {
       ;['buildings', 'paths', 'route', 'draft'].forEach((id) => map.addSource(id, { type: 'geojson', data: EMPTYFC }))
-      map.addLayer({ id: 'buildings-3d', type: 'fill-extrusion', source: 'buildings', paint: { 'fill-extrusion-color': ['get', 'color'], 'fill-extrusion-height': ['get', 'height'], 'fill-extrusion-base': 0, 'fill-extrusion-opacity': 0.9 } })
-      map.addLayer({ id: 'paths-line', type: 'line', source: 'paths', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#16a34a', 'line-width': 4, 'line-dasharray': [2, 1] } })
-      map.addLayer({ id: 'route-casing', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#fff', 'line-width': 9 } })
-      map.addLayer({ id: 'route-line', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#0b5fff', 'line-width': 5 } })
-      map.addLayer({ id: 'draft-fill', type: 'fill', source: 'draft', filter: ['==', ['geometry-type'], 'Polygon'], paint: { 'fill-color': '#d93025', 'fill-opacity': 0.3 } })
-      map.addLayer({ id: 'draft-line', type: 'line', source: 'draft', filter: ['!=', ['geometry-type'], 'Point'], paint: { 'line-color': '#d93025', 'line-width': 3 } })
-      map.addLayer({ id: 'draft-pts', type: 'circle', source: 'draft', filter: ['==', ['geometry-type'], 'Point'], paint: { 'circle-radius': 5, 'circle-color': '#d93025', 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 } })
+      map.addLayer({ id: 'buildings-3d', type: 'fill-extrusion', source: 'buildings', paint: { 'fill-extrusion-color': ['get', 'color'], 'fill-extrusion-height': ['get', 'height'], 'fill-extrusion-base': 0, 'fill-extrusion-opacity': 0.88 } })
+      map.addLayer({ id: 'paths-line', type: 'line', source: 'paths', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#00e676', 'line-width': 4, 'line-dasharray': [2, 1] } })
+      map.addLayer({ id: 'route-casing', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#00131c', 'line-opacity': 0.85, 'line-width': 10 } })
+      map.addLayer({ id: 'route-line', type: 'line', source: 'route', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#00e5ff', 'line-width': 5 } })
+      map.addLayer({ id: 'draft-fill', type: 'fill', source: 'draft', filter: ['==', ['geometry-type'], 'Polygon'], paint: { 'fill-color': '#ff3d9a', 'fill-opacity': 0.3 } })
+      map.addLayer({ id: 'draft-line', type: 'line', source: 'draft', filter: ['!=', ['geometry-type'], 'Point'], paint: { 'line-color': '#ff3d9a', 'line-width': 3 } })
+      map.addLayer({ id: 'draft-pts', type: 'circle', source: 'draft', filter: ['==', ['geometry-type'], 'Point'], paint: { 'circle-radius': 5, 'circle-color': '#ff3d9a', 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 } })
       setReady(true)
     })
     mapRef.current = map
@@ -104,6 +132,14 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
       meMarker.current = new maplibregl.Marker({ element: el }).setLngLat([me[1], me[0]]).addTo(mapRef.current)
     } else meMarker.current.setLngLat([me[1], me[0]])
   }, [me, ready])
+
+  useEffect(() => { // apply the chosen base map
+    baseRef.current = base; store.set('afit_base', base)
+    if (!ready) return
+    Object.keys(BASES).forEach((k) => mapRef.current.setLayoutProperty('base-' + k, 'visibility', k === base ? 'visible' : 'none'))
+  }, [base, ready])
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(''), 7000); return () => clearTimeout(t) }, [toast])
+  const cycleBase = () => setBase((b) => { const ks = Object.keys(BASES); return ks[(ks.indexOf(b) + 1) % ks.length] })
 
   // start the map where the user is: fly to the first GPS fix once
   useEffect(() => {
@@ -212,7 +248,7 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
   }, [ready, tapping, drawing])
   useEffect(() => {
     if (!ready || !form || !pick) return
-    const m = new maplibregl.Marker({ draggable: true, color: '#d93025' }).setLngLat([pick[1], pick[0]]).addTo(mapRef.current)
+    const m = new maplibregl.Marker({ draggable: true, color: '#ff3d9a' }).setLngLat([pick[1], pick[0]]).addTo(mapRef.current)
     m.on('dragend', () => { const l = m.getLngLat(); setPick([l.lat, l.lng]) })
     return () => m.remove()
   }, [pick, form, ready])
@@ -275,7 +311,7 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
   return (
     <div className="app">
       <div className="bar">
-        <h1>📍 AFIT</h1>
+        <h1><i className="dot" />AFIT</h1>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search hall, hostel, cafeteria…" />
         {isAdmin && !form && !pathForm && <button onClick={() => setForm({ ...EMPTY })}>+ Place</button>}
         {isAdmin && !form && !pathForm && <button className="sec" onClick={startPath}>+ Path</button>}
@@ -290,9 +326,13 @@ export default function MapView({ user, places, paths, status, onChanged, onLogo
       <div className="mapwrap">
         <div ref={box} className="map3d" />
         {mapErr && <div className="maperr">{mapErr}</div>}
-        <button className="sec btn3d" onClick={toggle3d}>{is3d ? '3D' : '2D'}</button>
-        <button className="sec btn3d" style={{ top: 52 }} onClick={toMe} aria-label="My location">📍</button>
-        <button className="sec btn3d" style={{ top: 94 }} onClick={toCampus} aria-label="Campus">🏫</button>
+        {toast && <div className="toast">{toast}</div>}
+        <div className="mapbtns">
+          <button className="sec" onClick={toggle3d} aria-label="Toggle 3D">{is3d ? '3D' : '2D'}</button>
+          <button className="sec" onClick={toMe} aria-label="My location">📍</button>
+          <button className="sec" onClick={toCampus} aria-label="Campus">🏫</button>
+          <button className="sec" onClick={cycleBase} aria-label={`Map type: ${BASES[base].label}`}>{BASES[base].icon}</button>
+        </div>
         {nav && (
           <div className="navcard">
             <b>🧭 {nav.place.name}</b>

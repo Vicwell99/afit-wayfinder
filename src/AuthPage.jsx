@@ -24,7 +24,7 @@ export default function AuthPage({ onAuth, onGuest }) {
   return (
     <div className="auth">
       <form className="card" onSubmit={submit}>
-        <h1>📍 AFIT Wayfinder</h1>
+        <img className="hero" src="/cover.jpg" alt="AFIT Wayfinder" />
         <p className="muted">{mode === 'login' ? 'Log in to your account' : 'Create a student account'}</p>
         {mode === 'register' && <input placeholder="Full name" autoComplete="name" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} />}
         <input type="email" placeholder="Email" autoComplete="email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />
